@@ -2,24 +2,35 @@ const path = require('path');
 const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const baseConfig = {
-    entry: path.resolve(__dirname, './src/index.js'),
+    entry: path.resolve(__dirname, './src/index.ts'),
+    devtool: 'inline-source-map',
     mode: 'development',
     module: {
         rules: [
             {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+                test: /\.tsx?$/ ,
+                use: ['style-loader', 'css-loader', 'ts-loader'],
+                exclude: /node_modules/,
             },
+            {
+                test: /\.css$/i,
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+              },
+            {
+                test: /\.s[ac]ss$/i,
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+            }
         ],
     },
     resolve: {
-        extensions: ['.js'],
+        extensions: ['.ts', '.tsx', '.js'],
     },
     output: {
         filename: 'index.js',
-        path: path.resolve(__dirname, '../dist'),
+        path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
         new HtmlWebpackPlugin({

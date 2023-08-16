@@ -31,5 +31,5 @@ footer .copyright a:hover {
     color: #555;
 }
 footer .copyright:before {
-    content: '©';
+    content: '';
 }
